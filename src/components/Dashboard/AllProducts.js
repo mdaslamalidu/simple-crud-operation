@@ -1,5 +1,6 @@
 import { Dropdown } from "flowbite-react";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const AllProducts = () => {
@@ -21,7 +22,6 @@ const AllProducts = () => {
       });
   }, [refress]);
 
-  console.log(products);
   const handleDelete = (id) => {
     fetch(`http://localhost:5000/product/${id}`, {
       method: "DELETE",
@@ -38,6 +38,11 @@ const AllProducts = () => {
       .catch((error) => {
         toast.error(error.message);
       });
+  };
+
+  const navigate = useNavigate();
+  const handleEdit = (id) => {
+    navigate(`/dashboard/product/edit/${id}`);
   };
 
   return (
@@ -74,7 +79,9 @@ const AllProducts = () => {
                   <td class="py-4 px-6">${product.price}</td>
                   <td class="py-4 px-6">
                     <Dropdown label="Action" arrowIcon={false}>
-                      <Dropdown.Item>Edit</Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleEdit(product._id)}>
+                        Edit
+                      </Dropdown.Item>
                       <Dropdown.Item onClick={() => handleDelete(product._id)}>
                         Delete
                       </Dropdown.Item>
